@@ -1,0 +1,13 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/MIL/__pycache__
+/Models/__pycache__
+/.vs
+/pytorch_grad_cam/__pycache__
+/runs
+/sample_datasets/analises
+/saved_models
+/utils/__pycache__
+/metrics.csv
