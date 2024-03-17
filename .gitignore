@@ -11,3 +11,5 @@
 /saved_models
 /utils/__pycache__
 /metrics.csv
+/pytorch_grad_cam/utils/__pycache__
+/sample_datasets - Copy
