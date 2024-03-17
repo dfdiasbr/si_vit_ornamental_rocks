@@ -359,10 +359,10 @@ def train_model(model, dataloaders, criterion, optimizer, class_names, dataset_s
     print('Best epoch val Acc: {:4f}'.format(best_vac))
     
     #Evolution - Douglas Dias - Begin
-    total_tp = 0.0
-    total_tn = 0.0
-    total_fp = 0.0
-    total_fn = 0.0
+    total_val_tp = 0.0
+    total_val_tn = 0.0
+    total_val_fp = 0.0
+    total_val_fn = 0.0
     #Evolution - Douglas Dias - End
     
     for cls_idx in range(len(class_names)):
@@ -376,10 +376,10 @@ def train_model(model, dataloaders, criterion, optimizer, class_names, dataset_s
         fn_plus_tn = fn + tn
 
         #Evolution - Douglas Dias - Begin
-        total_tp += tp
-        total_tn += tn
-        total_fp += fp
-        total_fn += fn
+        total_val_tp += tp
+        total_val_tn += tn
+        total_val_fp += fp
+        total_val_fn += fn
         #Evolution - Douglas Dias - End
 
         # precision
@@ -415,15 +415,9 @@ def train_model(model, dataloaders, criterion, optimizer, class_names, dataset_s
         print('{} sensitivity: {:.4f}  specificity: {:.4f}'.format(class_names[cls_idx], TPR, TNR))
         print('{} FPR: {:.4f}  NPV: {:.4f}'.format(class_names[cls_idx], FPR, NPV))
     
-    #Evolution - Douglas Dias - Begin
-
-    #compiling the metrics to the model
-    geral_acc = (total_tp + total_tn) / (total_tp + total_tn + total_fp + total_fn)
-    geral_precision = total_tp / (total_tp + total_fp)
-    geral_recall = total_tp / (total_tp + total_fn)
-    geral_f1 = 2 * (geral_precision * geral_recall) / (geral_precision + geral_recall)
+    #Evolution - Douglas Dias - Begin    
     
-    row = [model_idx, geral_acc, geral_precision, geral_recall, geral_f1]
+    row = [model_idx, best_acc.item(), best_vac.item(), total_val_tp, total_val_fn, total_val_fp, total_val_tn]
     
     with open('./metrics.csv', 'a',encoding='UTF8', newline='') as f:        
         writercsv = csv.writer(f)
@@ -788,7 +782,7 @@ def get_args_parser():
     # check_minibatch for painting pics
     parser.add_argument('--check_minibatch', default=None, type=int, help='check batch_size')
 
-    parser.add_argument('--num_epochs', default=3, type=int, help='training epochs')
+    parser.add_argument('--num_epochs', default=10, type=int, help='training epochs')
     parser.add_argument('--intake_epochs', default=0, type=int, help='only save model at epochs after intake_epochs')
     parser.add_argument('--lr', default=0.00001, type=float, help='learing rate')
     parser.add_argument('--lrf', type=float, default=0.0,
